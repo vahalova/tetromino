@@ -63,11 +63,19 @@ def draw(game):
 
 def play_game():
 
-
+    amount = 0
     game = Tetris()
     draw(game)
     while True:
-        tah = int(input("Number: "))
-        for i in range(tah):
-            game.tick()
+        tah = input("Number: ")
+        if tah == "a":
+            amount = -1
+            game.move(amount)
+        elif tah == "d":
+            amount += 1
+            game.move(amount)
+        else:
+            tah = int(tah)
+            for i in range(tah):
+                game.tick()
         draw(game)
