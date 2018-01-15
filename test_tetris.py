@@ -20,10 +20,10 @@ def test_moving(amount):
     """Test that calling the game's move() method moves the block laterally"""
 
     game = tetris1.Tetris()
-    x1, y1 = game.block_position
+    row1, col1 = game.block_position
 
     game.move(amount)
-    x2, y2 = game.block_position
+    row2, col2 = game.block_position
 
-    assert x2 == x1 + amount  # movement to the side
-    assert y2 == y1 # the block didn't fall
+    assert col2 == col1 + amount  # movement to the side
+    assert row2 == row1  # the block didn't fall
