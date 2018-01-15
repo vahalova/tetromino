@@ -31,6 +31,11 @@ class Tetris:
         row += 1
         self.block_position = (row, column)
 
+    def move(self, amount):
+        row, column = self.block_position
+        column += amount
+        self.block_position = (row, column)
+
 
 
 
@@ -51,6 +56,9 @@ def draw(game):
         for symbol in row: #s0mbol = " " 0 "0"
             print(symbol, end = " ")
         print("|", end = "\n")
+
+
+
 
 
 def play_game():
