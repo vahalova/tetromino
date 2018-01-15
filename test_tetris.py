@@ -1,3 +1,5 @@
+import pytest
+
 import tetris1
 
 def test_simple_falling():
@@ -11,3 +13,17 @@ def test_simple_falling():
 
     assert col2 == col1  # no movement to the side
     assert row2 == row1 + 1  # the block fell down by 1 pixel
+
+
+@pytest.mark.parametrize('amount', range(-3, 4))
+def test_moving(amount):
+    """Test that calling the game's move() method moves the block laterally"""
+
+    game = tetris1.Tetris()
+    x1, y1 = game.block_position
+
+    game.move(amount)
+    x2, y2 = game.block_position
+
+    assert x2 == x1 + amount  # movement to the side
+    assert y2 == y1 # the block didn't fall
