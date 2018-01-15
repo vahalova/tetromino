@@ -21,6 +21,11 @@ class Tetris:
         self.width = 12
         self.block = O_BLOCK
         self.block_position = (0,5)
+
+
+
+
+
     def tick(self):
         row, column = self.block_position
         row += 1
@@ -48,7 +53,13 @@ def draw(game):
         print("|", end = "\n")
 
 
+def play_game():
 
 
-game = Tetris()
-draw(game)
+    game = Tetris()
+    draw(game)
+    while True:
+        tah = int(input("Number: "))
+        for i in range(tah):
+            game.tick()
+        draw(game)
