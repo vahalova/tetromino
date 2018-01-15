@@ -1,3 +1,4 @@
+import time
 
 SIZE = 12
 
@@ -20,6 +21,13 @@ class Tetris:
         self.width = 12
         self.block = O_BLOCK
         self.block_position = (0,5)
+    def tick(self):
+        row, column = self.block_position
+        row += 1
+        self.block_position = (row, column)
+
+
+
 
 
 
@@ -38,5 +46,9 @@ def draw(game):
         for symbol in row: #s0mbol = " " 0 "0"
             print(symbol, end = " ")
         print("|", end = "\n")
+
+
+
+
 game = Tetris()
 draw(game)
