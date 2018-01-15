@@ -1,3 +1,3 @@
 class Tetris:
-    def __init__(self,height):
-        self.height = height
+    def __init__(self):
+        self.height = 12
