@@ -1,8 +1,25 @@
+
+SIZE = 12
+
+O_BLOCK = [(0, 0), (0+1, 0), (0, 0+1), (0+1,0+1)]
+I_BLOCK = [[(0, 0), (0+1, 0),(0+2, 0), (0+3, 0)],[(0,0-1), (0, 0), (0, 0+1), (0, 0+2)]]
+L_BLOCK = [[(0, 0-1), (0, 0), (0, 0+1), (0+1, 0-1)], [(0, 0), (0+1, 0), (0+2, 0), (0, 0+1)], [(0+1, 0-1), (0+1, 0), (0+1, 0+1), (0, 0+1)], [(0, 0), (0, 0+1), (0+1, 0+1), (0+2, 0+1)]]
+J_BLOCK = [[(0, 0-1), (0, 0), (0, 0+1), (0+1, 0+1)], [(0, 0), (0+1, 0), (0+2, 0), (0, 0-1)], [(0+1, 0-1), (0+1, 0), (0+1, 0+1), (0, 0-1)], [(0, 0), (0, 0-1), (0+1, 0-1), (0+2, 0-1)]]
+T_BLOCK = [[(0, 0-1), (0, 0), (0, 0+1), (0+1, 0)], [(0, 0), (0+1, 0), (0+2, 0), (0+1, 0+1)], [(0, 0), (0+1, 0), (0+2, 0), (0+1, 0-1)], [(0+1, 0-1), (0+1, 0), (0+1, 0+1), (0, 0)]]
+S_BLOCK = [[(0, 0), (0, 0+1), (0+1, 0), (0+1, 0-1)], [(0, 0), (0+1, 0), (0+1, 0+1), (0+2, 0+1)]]
+Z_BLOCK = [[(0, 0+1), (0+1, 0+1), (0+1, 0), (0+2, 0)], [(0, 0-1), (0, 0), (0+1, 0), (0+1, 0+1)]]
+
+BLOCKS = [O_BLOCK, I_BLOCK, L_BLOCK, J_BLOCK, T_BLOCK, S_BLOCK, Z_BLOCK]
+
+
+
+
 class Tetris:
     def __init__(self):
         self.height = 12
         self.width = 12
-        self.block = [(5,0)]
+        self.block = O_BLOCK
+        self.block_position = (0,5)
 
 
 
@@ -13,12 +30,12 @@ def draw(game):
             for i in range(game.width):
                 row.append('.')
             rows.append(row)
-    for x, y in game.block:
-        rows[y][x] = 'X'
+    for row, column in game.block:
+        rows[row + game.block_position[0]][column + game.block_position[1]] = 'X'
 
     for row in rows:
         print("|", end = "")
-        for symbol in row: #symbol = " " x "X"
+        for symbol in row: #s0mbol = " " 0 "0"
             print(symbol, end = " ")
         print("|", end = "\n")
 game = Tetris()
