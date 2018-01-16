@@ -30,26 +30,22 @@ class Tetris:
 
     def move(self, amount):
         row1, column1 = self.block_position
-
         test(row1, column1,amount, self)
         if test(row1, column1, amount, self) == False:
             column1
         else:
             column1 += amount
 
-
         self.block_position = (row1, column1)
 
 def test(row1, column1, amount, game):
     row1, column1 = game.block_position
-    while True:
-        for row, column in game.block:
-            if (column1+column+amount) == -1:
-                return False
-            elif (column1+column+amount) == 10:
-                return False
-
-        return True
+    for row, column in game.block:
+        if (column1+column+amount) == -1:
+            return False
+        elif (column1+column+amount) == 10:
+            return False
+    return True
 
 def draw(game):
     rows = []
