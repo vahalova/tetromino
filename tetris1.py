@@ -20,7 +20,8 @@ class Tetris:
     def __init__(self):
         self.height = 12
         self.width = 10
-        self.block = random.choice(BLOCKS)[randint(0,3)]
+        self.block = random.choice(BLOCKS)
+        self.block_rotation = randint(0,3)
         self.block_position = (0,4)
 
     def tick(self):
@@ -30,20 +31,36 @@ class Tetris:
 
     def move(self, amount):
         row1, column1 = self.block_position
-        test(row1, column1,amount, self)
-        if test(row1, column1, amount, self) == False:
+        move_test(row1, column1,amount, self)
+        if move_test(row1, column1, amount, self) == False:
             column1
         else:
             column1 += amount
-
         self.block_position = (row1, column1)
 
-def test(row1, column1, amount, game):
-    row1, column1 = game.block_position
-    for row, column in game.block:
+    def rotate(self):
+        row1, column1 = self.block_position
+        self.block_rotation += 1
+        if self.block_rotation == 4:
+            self.block_rotation = 0
+        rotate_test(row1, column1, self)
+        if rotate_test(row1, column1, self) == False:
+            column1 -= 3
+        self.block_position = (row1, column1)
+
+def move_test(row1, column1, amount, game):
+
+    for row, column in game.block[game.block_rotation]:
         if (column1+column+amount) == -1:
             return False
         elif (column1+column+amount) == 10:
+            return False
+    return True
+
+def rotate_test(row1, column1, game):
+
+    for row, column in game.block[game.block_rotation]:
+        if (column1+column) == 10:
             return False
     return True
 
@@ -54,7 +71,7 @@ def draw(game):
             for i in range(game.width):
                 row.append('.')
             rows.append(row)
-    for row, column in game.block:
+    for row, column in game.block[game.block_rotation]:
         rows[row + game.block_position[0]][column + game.block_position[1]] = 'X'
 
     for row in rows:
@@ -62,7 +79,6 @@ def draw(game):
         for symbol in row: #s0mbol = " " 0 "0"
             print(symbol, end = " ")
         print("|", end = "\n")
-
 
 def play_game():
     amount = 0
@@ -76,6 +92,9 @@ def play_game():
         elif tah == "d":
             amount = 1
             game.move(amount)
+        elif tah =="w":
+            game.rotate()
+
         else:
             tah = int(tah)
             for i in range(tah):
