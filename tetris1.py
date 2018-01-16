@@ -26,14 +26,9 @@ class Tetris:
         self.waste_list = []
 
     def tick(self):
-
         row1, column1 = self.block_position
         row1 += 1
         self.block_position = (row1, column1)
-
-
-
-
 
     def move(self, amount):
         row1, column1 = self.block_position
@@ -76,10 +71,12 @@ def move_test(row1, column1, amount, game):
     return True
 
 def waste_test(row1, column1, game):
+
     for row, column in game.block[game.block_rotation]:
         if (row + row1) == 11:
             return False
-        
+        elif [row+row1+1, column+column1] in game.waste_list:
+            return False
     return True
 
 def rotate_test_side(row1, column1, game):
@@ -93,7 +90,6 @@ def rotate_test_bottom(row1, column1, game):
         if (row+row1) == 12:
             return False
     return True
-
 
 def draw(game):
     rows = []
@@ -130,7 +126,6 @@ def play_game():
         else:
             tah = int(tah)
             for i in range(tah):
-
                 game.tick()
                 game.waste()
         draw(game)
