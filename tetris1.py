@@ -43,13 +43,15 @@ class Tetris:
         self.block_rotation += 1
         if self.block_rotation == 4:
             self.block_rotation = 0
-        rotate_test(row1, column1, self)
-        if rotate_test(row1, column1, self) == False:
+        rotate_test_side(row1, column1, self)
+        if rotate_test_side(row1, column1, self) == False:
             column1 -= 3
+        rotate_test_bottom(row1, column1, self)
+        if rotate_test_bottom(row1, column1, self) == False:
+            row1 -=3
         self.block_position = (row1, column1)
 
 def move_test(row1, column1, amount, game):
-
     for row, column in game.block[game.block_rotation]:
         if (column1+column+amount) == -1:
             return False
@@ -57,12 +59,18 @@ def move_test(row1, column1, amount, game):
             return False
     return True
 
-def rotate_test(row1, column1, game):
-
+def rotate_test_side(row1, column1, game):
     for row, column in game.block[game.block_rotation]:
         if (column1+column) == 10:
             return False
     return True
+
+def rotate_test_bottom(row1, column1, game):
+    for row, column in game.block[game.block_rotation]:
+        if (row+row1) == 12:
+            return False
+    return True
+
 
 def draw(game):
     rows = []
