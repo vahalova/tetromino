@@ -23,11 +23,17 @@ class Tetris:
         self.block = random.choice(BLOCKS)
         self.block_rotation = randint(0,3)
         self.block_position = (0,4)
+        self.waste_list = []
 
     def tick(self):
-        row, column = self.block_position
-        row += 1
-        self.block_position = (row, column)
+
+        row1, column1 = self.block_position
+        row1 += 1
+        self.block_position = (row1, column1)
+
+
+
+
 
     def move(self, amount):
         row1, column1 = self.block_position
@@ -51,6 +57,16 @@ class Tetris:
             row1 -=3
         self.block_position = (row1, column1)
 
+    def waste(self):
+        row1, column1 = self.block_position
+        waste_test(row1, column1, self)
+        if waste_test(row1, column1, self) == False:
+            for row, column in self.block[self.block_rotation]:
+                self.waste_list.append([row+row1, column+column1])
+            self.block = random.choice(BLOCKS)
+            self.block_rotation = randint(0,3)
+            self.block_position = (0,4)
+
 def move_test(row1, column1, amount, game):
     for row, column in game.block[game.block_rotation]:
         if (column1+column+amount) == -1:
@@ -59,9 +75,16 @@ def move_test(row1, column1, amount, game):
             return False
     return True
 
+def waste_test(row1, column1, game):
+    for row, column in game.block[game.block_rotation]:
+        if (row + row1) == 11:
+            return False
+        
+    return True
+
 def rotate_test_side(row1, column1, game):
     for row, column in game.block[game.block_rotation]:
-        if (column1+column) == 10:
+        if (column1+column) == 11:
             return False
     return True
 
@@ -81,10 +104,11 @@ def draw(game):
             rows.append(row)
     for row, column in game.block[game.block_rotation]:
         rows[row + game.block_position[0]][column + game.block_position[1]] = 'X'
-
+    for row, column in game.waste_list:
+        rows[row][column] = 'X'
     for row in rows:
         print("|", end = "")
-        for symbol in row: #s0mbol = " " 0 "0"
+        for symbol in row: #symbol = " " x "X"
             print(symbol, end = " ")
         print("|", end = "\n")
 
@@ -106,5 +130,7 @@ def play_game():
         else:
             tah = int(tah)
             for i in range(tah):
+
                 game.tick()
+                game.waste()
         draw(game)
