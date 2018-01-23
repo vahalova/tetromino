@@ -24,6 +24,8 @@ class Tetris:
         self.block_rotation = randint(0,3)
         self.block_position = (0,4)
         self.waste_dict = {}
+        for row in range(self.height):
+            self.waste_dict[row, -1] = (0,0,0)
 
     def tick(self):
         row1, column1 = self.block_position
@@ -102,16 +104,19 @@ def rotate_test_bottom(row1, column1, game):
     return True
 
 def draw(game):
+
     rows = []
-    for i in range(game.height):
+    for row_num in range(game.height):
             row = []
-            for i in range(game.width):
-                row.append('.')
+            for column_num in range(game.width):
+                if (row_num, column_num) in game.waste_dict:
+                    row.append('X')
+                else:
+                    row.append('.')
             rows.append(row)
     for row, column in game.block[game.block_rotation]:
         rows[row + game.block_position[0]][column + game.block_position[1]] = 'X'
-    for row, column in game.waste_dict:
-        rows[row][column] = 'X'
+
     for row in rows:
         print("|", end = "")
         for symbol in row: #symbol = " " x "X"
