@@ -28,82 +28,66 @@ class Tetris:
             self.waste_dict[row, -1] = (0,0,0)
             self.waste_dict[row, self.width] = (0,0,0)
         for column in range(self.width):
-            self.waste_dict[self.height, 0] = (0,0,0)
+            self.waste_dict[self.height, column] = (0,0,0)
     def tick(self):
         row1, column1 = self.block_position
-        row1 += 1
-        self.block_position = (row1, column1)
 
-    def move(self, amount):
-        row1, column1 = self.block_position
-        move_test(row1, column1,amount, self)
-        if move_test(row1, column1, amount, self) == False:
-            column1
-        else:
-            column1 += amount
-        waste_test(row1, column1, self)
-        self.block_position = (row1, column1)
-        if waste_test(row1, column1, self) == False:
-            for row, column in self.block[self.block_rotation]:
-                self.waste_dict[row+row1, column+column1] = COLOR
+        self.block_position = (row1+1, column1)
+        if waste_test(self) == False:
+            self.block_position = (row1, column1)
+            for row, column in self.get_block_coord():
+                self.waste_dict[row, column] = COLOR
             self.block = random.choice(BLOCKS)
             self.block_rotation = randint(0,3)
             self.block_position = (0,4)
+
+
+
+
+
+
+
+
+    def move(self, amount):
+        row1, column1 = self.block_position
+        self.block_position = (row1, column1+amount)
+        if waste_test(self) == False:
+            self.block_position = (row1, column1)
+
 
     def rotate(self):
         row1, column1 = self.block_position
         self.block_rotation += 1
         if self.block_rotation == 4:
             self.block_rotation = 0
-        rotate_test_side(row1, column1, self)
-        if rotate_test_side(row1, column1, self) == False:
-            column1 -= 3
-        rotate_test_bottom(row1, column1, self)
-        if rotate_test_bottom(row1, column1, self) == False:
-            row1 -=3
+
         self.block_position = (row1, column1)
 
-    def waste(self):
-        row1, column1 = self.block_position
-        waste_test(row1, column1, self)
-        if waste_test(row1, column1, self) == False:
-            for row, column in self.block[self.block_rotation]:
-                self.waste_dict[row+row1, column+column1] = COLOR
-            self.block = random.choice(BLOCKS)
-            self.block_rotation = randint(0,3)
-            self.block_position = (0,4)
 
-def move_test(row1, column1, amount, game):
-    for row, column in game.block[game.block_rotation]:
-        if (column1+column+amount) == -1:
-            return False
-        elif (column1+column+amount) == 10:
-            return False
-    return True
+    def get_block_coord(self):
+        result = []
+        for block_row, block_column in self.block[self.block_rotation]:
+            row = block_row + self.block_position[0]
+            column = block_column + self.block_position[1]
+            result.append((row,column))
+        return result
 
-def waste_test(row1, column1, game):
 
-    for row, column in game.block[game.block_rotation]:
-        if (row + row1) == 11:
-            return False
-        elif (row+row1+1, column+column1) in game.waste_dict:
+
+
+def waste_test(game):
+
+    for row, column in game.get_block_coord():
+        if (row, column) in game.waste_dict:
             return False
     return True
 
 
 
 
-def rotate_test_side(row1, column1, game):
-    for row, column in game.block[game.block_rotation]:
-        if (column1+column) == 11:
-            return False
-    return True
 
-def rotate_test_bottom(row1, column1, game):
-    for row, column in game.block[game.block_rotation]:
-        if (row+row1) == 12:
-            return False
-    return True
+
+
 
 def draw(game):
 
@@ -116,8 +100,9 @@ def draw(game):
                 else:
                     row.append('.')
             rows.append(row)
-    for row, column in game.block[game.block_rotation]:
-        rows[row + game.block_position[0]][column + game.block_position[1]] = 'X'
+    for row, column in game.get_block_coord():
+        print(row, column)
+        rows[row][column] = 'X'
 
     for row in rows:
         print("|", end = "")
@@ -144,5 +129,4 @@ def play_game():
             tah = int(tah)
             for i in range(tah):
                 game.tick()
-                game.waste()
         draw(game)
