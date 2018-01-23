@@ -7,13 +7,13 @@ O_BLOCK = [[(0, 0), (0+1, 0), (0, 0+1), (0+1,0+1)], [(0, 0), (0+1, 0), (0, 0+1),
 I_BLOCK = [[(0, 0), (0+1, 0),(0+2, 0), (0+3, 0)], [(0,0), (0, 0+1), (0, 0+2), (0, 0+3)], [(0, 0), (0+1, 0),(0+2, 0), (0+3, 0)],[(0,0), (0, 0+1), (0, 0+2), (0, 0+3)]]
 L_BLOCK = [[(0, 0), (0, 0+1), (0, 0+2), (0+1, 0)], [(0, 0), (0+1, 0), (0+2, 0), (0+2, 0+1)], [(0+1, 0), (0+1, 0+1), (0+1, 0+2), (0, 0+2)], [(0, 0), (0, 0+1), (0+1, 0+1), (0+2, 0+1)]]
 J_BLOCK = [[(0, 0), (0, 0+1), (0, 0+2), (0+1, 0+2)], [(0+2, 0), (0, 0+1), (0+1, 0+1), (0+2, 0+1)], [(0+1, 0), (0+1, 0+1), (0+1, 0+2), (0, 0)], [(0, 0), (0, 0+1), (0+1, 0), (0+2, 0)]]
-T_BLOCK = [[(0, 0), (0, 0+1), (0, 0+2), (0+1, 0+1)], [(0, 0), (0+1, 0), (0+2, 0), (0+1, 0+1)], [(0+1, 0), (0, 0+1), (0+1, 0+1), (0+2, 0+1) ], [(0+1, 0), (0+1, 0+1), (0+1, 0+2), (0, 0+1)]]
+T_BLOCK = [[(0, 0), (0, 0+1), (0, 0+2), (0+1, 0+1)], [(0, 0), (0+1, 0), (0+2, 0), (0+1, 0+1)], [(0+1, 0), (0+1, 0+1), (0+1, 0+2), (0, 0+1)], [(0+1, 0), (0, 0+1), (0+1, 0+1), (0+2, 0+1)]]
 S_BLOCK = [[(0+1, 0), (0, 0+1), (0, 0+2), (0+1, 0+1) ], [(0, 0), (0+1, 0), (0+1, 0+1), (0+2, 0+1)], [(0+1, 0), (0, 0+1), (0, 0+2), (0+1, 0+1)], [(0, 0), (0+1, 0), (0+1, 0+1), (0+2, 0+1)]]
 Z_BLOCK = [[(0, 0+1), (0+1, 0+1), (0+1, 0), (0+2, 0)], [(0, 0), (0, 0+1), (0+1, 0+1), (0+1, 0+2)], [(0, 0+1), (0+1, 0+1), (0+1, 0), (0+2, 0)], [(0, 0), (0, 0+1), (0+1, 0+1), (0+1, 0+2)]]
 
 BLOCKS = [O_BLOCK, I_BLOCK, L_BLOCK, J_BLOCK, T_BLOCK, S_BLOCK, Z_BLOCK]
 
-
+COLOR = (0,20,0)
 
 
 class Tetris:
@@ -23,7 +23,7 @@ class Tetris:
         self.block = random.choice(BLOCKS)
         self.block_rotation = randint(0,3)
         self.block_position = (0,4)
-        self.waste_list = []
+        self.waste_dict = {}
 
     def tick(self):
         row1, column1 = self.block_position
@@ -37,7 +37,14 @@ class Tetris:
             column1
         else:
             column1 += amount
+        waste_test(row1, column1, self)
         self.block_position = (row1, column1)
+        if waste_test(row1, column1, self) == False:
+            for row, column in self.block[self.block_rotation]:
+                self.waste_dict[row+row1, column+column1] = COLOR
+            self.block = random.choice(BLOCKS)
+            self.block_rotation = randint(0,3)
+            self.block_position = (0,4)
 
     def rotate(self):
         row1, column1 = self.block_position
@@ -57,7 +64,7 @@ class Tetris:
         waste_test(row1, column1, self)
         if waste_test(row1, column1, self) == False:
             for row, column in self.block[self.block_rotation]:
-                self.waste_list.append([row+row1, column+column1])
+                self.waste_dict[row+row1, column+column1] = COLOR
             self.block = random.choice(BLOCKS)
             self.block_rotation = randint(0,3)
             self.block_position = (0,4)
@@ -75,9 +82,12 @@ def waste_test(row1, column1, game):
     for row, column in game.block[game.block_rotation]:
         if (row + row1) == 11:
             return False
-        elif [row+row1+1, column+column1] in game.waste_list:
+        elif (row+row1+1, column+column1) in game.waste_dict:
             return False
     return True
+
+
+
 
 def rotate_test_side(row1, column1, game):
     for row, column in game.block[game.block_rotation]:
@@ -100,7 +110,7 @@ def draw(game):
             rows.append(row)
     for row, column in game.block[game.block_rotation]:
         rows[row + game.block_position[0]][column + game.block_position[1]] = 'X'
-    for row, column in game.waste_list:
+    for row, column in game.waste_dict:
         rows[row][column] = 'X'
     for row in rows:
         print("|", end = "")
