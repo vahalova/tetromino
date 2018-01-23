@@ -41,19 +41,11 @@ class Tetris:
             self.block_rotation = randint(0,3)
             self.block_position = (0,4)
 
-
-
-
-
-
-
-
     def move(self, amount):
         row1, column1 = self.block_position
         self.block_position = (row1, column1+amount)
         if waste_test(self) == False:
             self.block_position = (row1, column1)
-
 
     def rotate(self):
         row1, column1 = self.block_position
@@ -61,8 +53,11 @@ class Tetris:
         self.block_rotation += 1
         if self.block_rotation == 4:
             self.block_rotation = 0
-        if waste_test(self) == False:
-            self.block_rotation = rotation
+        for row, column in (0,0),(0,1),(0,-1),(1,0),(-1,0):
+            self.block_position = (row1+row, column1+column)
+            if waste_test(self):
+                return
+        self.block_rotation = rotation
         self.block_position = (row1, column1)
 
 
@@ -74,9 +69,6 @@ class Tetris:
             result.append((row,column))
         return result
 
-
-
-
 def waste_test(game):
 
     for row, column in game.get_block_coord():
@@ -84,15 +76,7 @@ def waste_test(game):
             return False
     return True
 
-
-
-
-
-
-
-
 def draw(game):
-
     rows = []
     for row_num in range(game.height):
             row = []
@@ -125,7 +109,6 @@ def play_game():
             game.move(amount)
         elif tah =="w":
             game.rotate()
-
         else:
             tah = int(tah)
             for i in range(tah):
