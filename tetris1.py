@@ -37,6 +37,9 @@ class Tetris:
             self.block_position = (row1, column1)
             for row, column in self.get_block_coord():
                 self.waste_dict[row, column] = COLOR
+            for row, column in self.get_block_coord():
+                self.full_row(row)
+
             self.block = random.choice(BLOCKS)
             self.block_rotation = randint(0,3)
             self.block_position = (0,4)
@@ -46,6 +49,14 @@ class Tetris:
         self.block_position = (row1, column1+amount)
         if waste_test(self) == False:
             self.block_position = (row1, column1)
+
+    def full_row(self, row):
+        for column in range(self.width):
+            if (row,column) not in self.waste_dict:
+                return False
+        print("juchu")
+
+
 
     def rotate(self):
         row1, column1 = self.block_position
@@ -62,6 +73,7 @@ class Tetris:
 
 
     def get_block_coord(self):
+        """vrátí seznam aktuální polohy kostky"""
         result = []
         for block_row, block_column in self.block[self.block_rotation]:
             row = block_row + self.block_position[0]
@@ -75,6 +87,8 @@ def waste_test(game):
         if (row, column) in game.waste_dict:
             return False
     return True
+
+
 
 def draw(game):
     rows = []
