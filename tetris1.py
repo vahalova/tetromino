@@ -57,10 +57,12 @@ class Tetris:
 
     def rotate(self):
         row1, column1 = self.block_position
+        rotation = self.block_rotation
         self.block_rotation += 1
         if self.block_rotation == 4:
             self.block_rotation = 0
-
+        if waste_test(self) == False:
+            self.block_rotation = rotation
         self.block_position = (row1, column1)
 
 
@@ -101,7 +103,6 @@ def draw(game):
                     row.append('.')
             rows.append(row)
     for row, column in game.get_block_coord():
-        print(row, column)
         rows[row][column] = 'X'
 
     for row in rows:
