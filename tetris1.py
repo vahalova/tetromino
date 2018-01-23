@@ -26,7 +26,9 @@ class Tetris:
         self.waste_dict = {}
         for row in range(self.height):
             self.waste_dict[row, -1] = (0,0,0)
-
+            self.waste_dict[row, self.width] = (0,0,0)
+        for column in range(self.width):
+            self.waste_dict[self.height, 0] = (0,0,0)
     def tick(self):
         row1, column1 = self.block_position
         row1 += 1
