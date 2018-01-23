@@ -54,7 +54,12 @@ class Tetris:
         for column in range(self.width):
             if (row,column) not in self.waste_dict:
                 return False
-        print("juchu")
+        for curr_row in range(row, -1, -1):
+            for column in range(self.width):
+                if (curr_row-1,column) not in self.waste_dict:
+                    self.waste_dict.pop((curr_row, column), None)
+                else:
+                    pass
 
 
 
