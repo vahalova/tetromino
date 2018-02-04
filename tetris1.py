@@ -51,6 +51,9 @@ class Tetris:
             self.block_rotation = randint(0,3)
             self.block_position = (0,4)
 
+            if waste_test(self) == False:
+                raise ValueError("!!!GAME OVER!!!")
+
     def move(self, amount):
         row1, column1 = self.block_position
         self.block_position = (row1, column1+amount)

@@ -44,13 +44,16 @@ def on_key_press():
         game.rotate()
 
 
-
-while True:
-    led_game()
-    game.tick()
-
-    for i in range(5):
-        on_key_press()
-        if  pin_down.value()!=0:
-            sleep(0.1)
+try:
+    while True:
         led_game()
+        game.tick()
+
+        for i in range(5):
+            on_key_press()
+            if  pin_down.value()!=0:
+                sleep(0.1)
+            led_game()
+except ValueError:
+    sleep(3)
+    reset()
