@@ -14,19 +14,25 @@ pin_right = Pin(14, Pin.IN, Pin.PULL_UP)
 pin_up = Pin(0, Pin.IN, Pin.PULL_UP)
 pin_down = Pin(13, Pin.IN, Pin.PULL_UP)
 
-color = (0, 10, 10)
+
 
 
 def led_game():
     np = NeoPixel(pin, LED)
     for led_row, led_column in game.get_block_coord():
         number_of_led = led_row + 2 + led_column*25
-        np[number_of_led] = color
-    for led_row, led_column in game.waste_dict:
+        np[number_of_led] = led_color(game.block_color, 15)
+    for (led_row, led_column), color in game.waste_dict.items():
         if led_row >= 0 and led_row <12 and led_column >= 0 and led_column <12:
             number_of_led = led_row + 2 + led_column*25
-            np[number_of_led] = color
+            np[number_of_led] = led_color(color, 20)
     np.write()
+
+def led_color(color, div):
+    r,g,b = color
+    return r//div, g//div, b//div
+
+
 
 
 def on_key_press():
