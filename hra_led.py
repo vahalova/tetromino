@@ -9,10 +9,10 @@ from time import sleep
 LED = 289
 game = tetris1.Tetris()
 pin = Pin(15, Pin.OUT)
-pin_left = Pin(12, Pin.IN, Pin.PULL_UP)
-pin_right = Pin(14, Pin.IN, Pin.PULL_UP)
-pin_up = Pin(0, Pin.IN, Pin.PULL_UP)
-pin_down = Pin(13, Pin.IN, Pin.PULL_UP)
+pin_left = Pin(14, Pin.IN, Pin.PULL_UP)
+pin_right = Pin(12, Pin.IN, Pin.PULL_UP)
+pin_up = Pin(13, Pin.IN, Pin.PULL_UP)
+pin_down = Pin(0, Pin.IN, Pin.PULL_UP)
 
 
 
