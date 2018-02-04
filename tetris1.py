@@ -1,5 +1,4 @@
-import random
-from random import randint
+from os import urandom
 
 
 
@@ -16,11 +15,20 @@ BLOCKS = [O_BLOCK, I_BLOCK, L_BLOCK, J_BLOCK, T_BLOCK, S_BLOCK, Z_BLOCK]
 COLOR = (0,20,0)
 
 
+def randint(a, b):
+    return urandom(1)[0] % (b-a) + a
+
+def choice(list):
+    index = randint(0, len(list))
+    return list[index]
+
+
 class Tetris:
     def __init__(self):
+
         self.height = 12
         self.width = 10
-        self.block = random.choice(BLOCKS)
+        self.block = choice(BLOCKS)
         self.block_rotation = randint(0,3)
         self.block_position = (0,4)
         self.waste_dict = {}
@@ -31,7 +39,6 @@ class Tetris:
             self.waste_dict[self.height, column] = (0,0,0)
     def tick(self):
         row1, column1 = self.block_position
-
         self.block_position = (row1+1, column1)
         if waste_test(self) == False:
             self.block_position = (row1, column1)
@@ -40,7 +47,7 @@ class Tetris:
             for row, column in self.get_block_coord():
                 self.full_row(row)
 
-            self.block = random.choice(BLOCKS)
+            self.block = choice(BLOCKS)
             self.block_rotation = randint(0,3)
             self.block_position = (0,4)
 
