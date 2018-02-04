@@ -19,12 +19,12 @@ pin_down = Pin(0, Pin.IN, Pin.PULL_UP)
 
 def led_game():
     np = NeoPixel(pin, LED)
-    for led_row, led_column in game.get_block_coord():
-        number_of_led = led_row + 2 + led_column*25
+    for column, row in game.get_block_coord():
+        number_of_led = row + 2 + (11-column)*25
         np[number_of_led] = led_color(game.block_color, 15)
-    for (led_row, led_column), color in game.waste_dict.items():
+    for (led_column, led_row), color in game.waste_dict.items():
         if led_row >= 0 and led_row <12 and led_column >= 0 and led_column <12:
-            number_of_led = led_row + 2 + led_column*25
+            number_of_led = led_row + 2 + (11-led_column)*25
             np[number_of_led] = led_color(color, 20)
     np.write()
 
