@@ -20,8 +20,12 @@ color = (0, 10, 10)
 def led_game():
     np = NeoPixel(pin, LED)
     for led_row, led_column in game.get_block_coord():
-        number_of_led = led_row + 1 + led_column*25
+        number_of_led = led_row + 2 + led_column*25
         np[number_of_led] = color
+    for led_row, led_column in game.waste_dict:
+        if led_row > 0 and led_row <12 and led_column > 0 and led_column <12:
+            number_of_led = led_row + 2 + led_column*25
+            np[number_of_led] = color
     np.write()
 
 """

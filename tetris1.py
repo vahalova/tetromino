@@ -27,7 +27,7 @@ class Tetris:
     def __init__(self):
 
         self.height = 12
-        self.width = 10
+        self.width = 12
         self.block = choice(BLOCKS)
         self.block_rotation = randint(0,3)
         self.block_position = (0,4)
