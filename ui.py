@@ -26,10 +26,10 @@ def on_draw():
         for col in range(game.width):
             coords = row, col
             if coords in block_coords:
-                color = (20, 0, 0)
+                color = game.block_color
             else:
                 color = game.waste_dict.get(coords, (0, 0, 0))
-            gl.glColor3f(*(min(1, c/20) for c in color))
+            gl.glColor3f(*(min(1, c/255) for c in color))
             draw_rectangle(col * tile_width,
                            window.height - (row+1) * tile_height,
                            tile_width + 1, tile_height + 1)
