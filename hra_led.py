@@ -13,7 +13,7 @@ pin_left = Pin(12, Pin.IN, Pin.PULL_UP)
 pin_right = Pin(14, Pin.IN, Pin.PULL_UP)
 pin_up = Pin(0, Pin.IN, Pin.PULL_UP)
 pin_down = Pin(13, Pin.IN, Pin.PULL_UP)
-block_move = game.tick()
+
 color = (0, 10, 10)
 
 
@@ -23,30 +23,28 @@ def led_game():
         number_of_led = led_row + 2 + led_column*25
         np[number_of_led] = color
     for led_row, led_column in game.waste_dict:
-        if led_row > 0 and led_row <12 and led_column > 0 and led_column <12:
+        if led_row >= 0 and led_row <12 and led_column >= 0 and led_column <12:
             number_of_led = led_row + 2 + led_column*25
             np[number_of_led] = color
     np.write()
 
-"""
 
-
-def on_key_press(key, mod):
-    global block_move
-
-    if key == pin_left.value()==0:
+def on_key_press():
+    if pin_left.value()==0:
         game.move(-1)
-    if key == pin_right.value()==0:
+    elif pin_right.value()==0:
         game.move(1)
-    if pin_up.value()==0:
+    elif pin_up.value()==0:
         game.rotate()
-    return block_move
 
-def tick(dt):
-    game.tick()
-"""
+
 
 while True:
     led_game()
     game.tick()
-    sleep(1)
+
+    for i in range(5):
+        on_key_press()
+        if  pin_down.value()!=0:
+            sleep(0.1)
+        led_game()
