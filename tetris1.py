@@ -128,17 +128,17 @@ def play_game():
     game = Tetris()
     draw(game)
     while True:
-        tah = input("Number: ")
-        if tah == "a":
+        choice = input("Number: ")
+        if choice == "a":
             amount = -1
             game.move(amount)
-        elif tah == "d":
+        elif choice == "d":
             amount = 1
             game.move(amount)
-        elif tah =="w":
+        elif choice =="w":
             game.rotate()
         else:
-            tah = int(tah)
-            for i in range(tah):
+            choice = int(choice)
+            for i in range(choice):
                 game.tick()
         draw(game)

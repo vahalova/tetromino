@@ -14,13 +14,13 @@ def choice_game():
             np[i]=(0,10,30)
         np.write()
         if pin_up.value()!=0:
-            import game.py
+            import tetris_led.py
     elif pin_down.value()==0:
         for i in range(NUMBER_LED):
             np[i]=(40,10,10)
         np.write()
         if pin_down.value()!=0:
-            import Snake_led.py
+            import snake_led.py
 for column, row in TEXT:
     number_of_led = row + 2 + (11-column)*25
     np[number_of_led]=(0,5,0)
