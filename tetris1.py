@@ -88,7 +88,6 @@ class Tetris:
 
 
     def get_block_coord(self):
-        """vrátí seznam aktuální polohy kostky"""
         result = []
         for block_row, block_column in self.block[self.block_rotation]:
             row = block_row + self.block_position[0]
